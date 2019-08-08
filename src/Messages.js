@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import React from 'react';
+import uuid from 'uuid/v1';
 
 class Messages extends Component {
   render() {
@@ -10,16 +11,15 @@ class Messages extends Component {
       </ul>
     );
   }
-
   renderMessage(message) {
-    const { member, text } = message;
     const { currentMember } = this.props;
+    const { member, text } = message;
     const messageFromMe = member.id === currentMember.id;
     const className = messageFromMe
       ? 'Messages-message currentMember'
       : 'Messages-message';
     return (
-      <li className={className}>
+      <li className={className} key={uuid()}>
         <span className="avatar" style={{ backgroundColor: member.color }} />
         <div className="Message-content">
           <div className="username">{member.username}</div>
@@ -29,5 +29,4 @@ class Messages extends Component {
     );
   }
 }
-
 export default Messages;

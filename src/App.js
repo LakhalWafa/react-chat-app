@@ -4,178 +4,38 @@ import Messages from './Messages';
 import Input from './Input';
 import Navbar from './Navbar';
 
-function randomName() {
-  const adjectives = [
-    'autumn',
-    'hidden',
-    'bitter',
-    'misty',
-    'silent',
-    'empty',
-    'dry',
-    'dark',
-    'summer',
-    'icy',
-    'delicate',
-    'quiet',
-    'white',
-    'cool',
-    'spring',
-    'winter',
-    'patient',
-    'twilight',
-    'dawn',
-    'crimson',
-    'wispy',
-    'weathered',
-    'blue',
-    'billowing',
-    'broken',
-    'cold',
-    'damp',
-    'falling',
-    'frosty',
-    'green',
-    'long',
-    'late',
-    'lingering',
-    'bold',
-    'little',
-    'morning',
-    'muddy',
-    'old',
-    'red',
-    'rough',
-    'still',
-    'small',
-    'sparkling',
-    'throbbing',
-    'shy',
-    'wandering',
-    'withered',
-    'wild',
-    'black',
-    'young',
-    'holy',
-    'solitary',
-    'fragrant',
-    'aged',
-    'snowy',
-    'proud',
-    'floral',
-    'restless',
-    'divine',
-    'polished',
-    'ancient',
-    'purple',
-    'lively',
-    'nameless'
-  ];
-  const nouns = [
-    'waterfall',
-    'river',
-    'breeze',
-    'moon',
-    'rain',
-    'wind',
-    'sea',
-    'morning',
-    'snow',
-    'lake',
-    'sunset',
-    'pine',
-    'shadow',
-    'leaf',
-    'dawn',
-    'glitter',
-    'forest',
-    'hill',
-    'cloud',
-    'meadow',
-    'sun',
-    'glade',
-    'bird',
-    'brook',
-    'butterfly',
-    'bush',
-    'dew',
-    'dust',
-    'field',
-    'fire',
-    'flower',
-    'firefly',
-    'feather',
-    'grass',
-    'haze',
-    'mountain',
-    'night',
-    'pond',
-    'darkness',
-    'snowflake',
-    'silence',
-    'sound',
-    'sky',
-    'shape',
-    'surf',
-    'thunder',
-    'violet',
-    'water',
-    'wildflower',
-    'wave',
-    'water',
-    'resonance',
-    'sun',
-    'wood',
-    'dream',
-    'cherry',
-    'tree',
-    'fog',
-    'frost',
-    'voice',
-    'paper',
-    'frog',
-    'smoke',
-    'star'
-  ];
-  const adjective = adjectives[Math.floor(Math.random() * adjectives.length)];
-  const noun = nouns[Math.floor(Math.random() * nouns.length)];
-  return adjective + noun;
-}
-
-function randomColor() {
-  return '#' + Math.floor(Math.random() * 0xffffff).toString(16);
-}
-
-function randomId() {
-  return '' + Math.floor(Math.random() * 100).toString(16);
-}
-
 class App extends Component {
   state = {
-    messages: [
+    currentMember: [
       {
         text: 'Hello!',
         member: {
           id: '1',
           color: 'blue',
-          username: 'bluemoon'
+          username: 'Mohammed Salah'
         }
       }
     ],
     member: {
-      id: randomId(),
-      username: randomName(),
-      color: randomColor()
-    }
+      id: '1',
+      color: 'blue',
+      username: 'Mohammed Salah'
+    },
+    memberRandom: {
+      id: '2',
+      username: 'Wafa',
+      color: 'pink'
+    },
+    turn: true
   };
-
   render() {
     return (
       <div className="App">
         <Navbar />
         <Messages
-          messages={this.state.messages}
-          currentMember={this.state.member}
+          messages={this.state.currentMember}
+          currentMember={this.state.memberRandom}
+          turn={this.state.turn}
         />
         <Input onSendMessage={this.onSendMessage} />
       </div>
@@ -183,12 +43,15 @@ class App extends Component {
   }
 
   onSendMessage = message => {
-    const messages = this.state.messages;
+    const messages = this.state.currentMember;
     messages.push({
       text: message,
-      member: this.state.member
+      member: this.state.turn ? this.state.memberRandom : this.state.member
     });
-    this.setState({ messages: messages });
+    this.setState({
+      currentMember: messages,
+      turn: !this.state.turn
+    });
   };
 }
 
